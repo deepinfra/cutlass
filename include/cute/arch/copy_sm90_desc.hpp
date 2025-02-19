@@ -312,6 +312,7 @@ prefetch_tma_descriptor(TmaDescriptor const* desc_ptr)
     : "l"(gmem_int_desc)
     : "memory");
 #else
+#error "Compiling without hopper or newer disabled"
   CUTE_INVALID_CONTROL_PATH("Trying to use TMA Descriptor Prefetch without CUTE_ARCH_TMA_SM90_ENABLED.");
 #endif
 }
