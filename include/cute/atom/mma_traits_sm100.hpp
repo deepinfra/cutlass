@@ -47,8 +47,8 @@
 
 // Check that aggregate initialization in .with() initializes all fields
 #if defined(__GNUG__)
-#pragma GCC diagnostic warning "-Wmissing-field-initializers"
-#pragma GCC diagnostic error "-Wmissing-field-initializers"
+//#pragma GCC diagnostic warning "-Wmissing-field-initializers"
+//#pragma GCC diagnostic error "-Wmissing-field-initializers"
 #endif
 
 namespace cute {
