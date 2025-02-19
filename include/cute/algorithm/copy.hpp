@@ -119,7 +119,6 @@ copy_if(AutoCopyAsync                const& cpy,
   using DstType = typename DstEngine::value_type;
 
   auto copy_op = []() {
-#if defined(CUTE_ARCH_CP_ASYNC_SM80_ENABLED)
     if constexpr (is_gmem<SrcEngine>::value && is_smem<DstEngine>::value &&
                   sizeof(SrcType) == sizeof(DstType)) {
       if constexpr (is_const_v<SrcElemWithConst> && sizeof(SrcType) == 16) {
@@ -134,9 +133,6 @@ copy_if(AutoCopyAsync                const& cpy,
     }
 
     CUTE_GCC_UNREACHABLE;
-#else
-    return UniversalCopy<SrcType,DstType>{};
-#endif
   }();
 
   CUTE_UNROLL

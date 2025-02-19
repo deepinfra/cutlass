@@ -56,16 +56,12 @@ struct SM80_CP_ASYNC_CACHEALWAYS
   copy(TS const& gmem_src,
        TD      & smem_dst)
   {
-#if defined(CUTE_ARCH_CP_ASYNC_SM80_ENABLED)
     TS const* gmem_ptr    = &gmem_src;
     uint32_t smem_int_ptr = cast_smem_ptr_to_uint(&smem_dst);
     asm volatile("cp.async.ca.shared.global.L2::128B [%0], [%1], %2;\n"
         :: "r"(smem_int_ptr),
            "l"(gmem_ptr),
            "n"(sizeof(TS)));
-#else
-    CUTE_INVALID_CONTROL_PATH("Support for cp.async instructions has not been enabled");
-#endif
   }
 };
 
@@ -83,16 +79,12 @@ struct SM80_CP_ASYNC_CACHEGLOBAL
   copy(TS const& gmem_src,
        TD      & smem_dst)
   {
-#if defined(CUTE_ARCH_CP_ASYNC_SM80_ENABLED)
     TS const* gmem_ptr    = &gmem_src;
     uint32_t smem_int_ptr = cast_smem_ptr_to_uint(&smem_dst);
     asm volatile("cp.async.cg.shared.global.L2::128B [%0], [%1], %2;\n"
         :: "r"(smem_int_ptr),
            "l"(gmem_ptr),
            "n"(sizeof(TS)));
-#else
-    CUTE_INVALID_CONTROL_PATH("Support for cp.async instructions has not been enabled");
-#endif
   }
 };
 
@@ -111,7 +103,6 @@ struct SM80_CP_ASYNC_CACHEALWAYS_ZFILL
        TD      & smem_dst,
        bool      pred)
   {
-#if defined(CUTE_ARCH_CP_ASYNC_SM80_ENABLED)
     TS const* gmem_ptr    = &gmem_src;
     uint32_t smem_int_ptr = cast_smem_ptr_to_uint(&smem_dst);
     int src_size = pred ? sizeof(TS) : 0;
@@ -120,9 +111,6 @@ struct SM80_CP_ASYNC_CACHEALWAYS_ZFILL
            "l"(gmem_ptr),
            "n"(sizeof(TS)),
            "r"(src_size));
-#else
-    CUTE_INVALID_CONTROL_PATH("Support for cp.async instructions has not been enabled");
-#endif
   }
 };
 
@@ -141,7 +129,6 @@ struct SM80_CP_ASYNC_CACHEGLOBAL_ZFILL
        TD      & smem_dst,
        bool      pred)
   {
-#if defined(CUTE_ARCH_CP_ASYNC_SM80_ENABLED)
     TS const* gmem_ptr    = &gmem_src;
     uint32_t smem_int_ptr = cast_smem_ptr_to_uint(&smem_dst);
     int src_size = pred ? sizeof(TS) : 0;
@@ -150,9 +137,6 @@ struct SM80_CP_ASYNC_CACHEGLOBAL_ZFILL
            "l"(gmem_ptr),
            "n"(sizeof(TS)),
            "r"(src_size));
-#else
-    CUTE_INVALID_CONTROL_PATH("Support for cp.async instructions has not been enabled");
-#endif
   }
 };
 
@@ -163,9 +147,7 @@ CUTE_HOST_DEVICE
 void
 cp_async_fence()
 {
-#if defined(CUTE_ARCH_CP_ASYNC_SM80_ENABLED)
   asm volatile("cp.async.commit_group;\n" ::);
-#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -176,13 +158,11 @@ CUTE_HOST_DEVICE
 void
 cp_async_wait()
 {
-#if defined(CUTE_ARCH_CP_ASYNC_SM80_ENABLED)
   if constexpr (N == 0) {
     asm volatile("cp.async.wait_all;\n" ::);
   } else {
     asm volatile("cp.async.wait_group %0;\n" :: "n"(N));
   }
-#endif
 }
 
 template <int N>
