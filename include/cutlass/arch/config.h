@@ -99,9 +99,9 @@
   #if (!defined(CUTLASS_ARCH_MMA_SM100_ENABLED) && defined(__CUDA_ARCH__) && __CUDA_ARCH__ == 1000)
     #define CUTLASS_ARCH_MMA_SM100_ENABLED 1
 
-    #if (!defined(CUTLASS_ARCH_MMA_SM100A_ENABLED) && defined(__CUDA_ARCH_FEAT_SM100_ALL))
+    //#if (!defined(CUTLASS_ARCH_MMA_SM100A_ENABLED) && defined(__CUDA_ARCH_FEAT_SM100_ALL))
       #define CUTLASS_ARCH_MMA_SM100A_ENABLED 1
-    #endif
+    //#endif
   #endif
 #endif
 
